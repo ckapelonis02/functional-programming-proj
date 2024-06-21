@@ -1,0 +1,26 @@
+user = fp19
+password = **********
+
+local!!!!!!!!!!!!!!!!!!!!!!!!!!!!!:
+*connect to vpn*
+ssh fp19@clu04.softnet.tuc.gr
+scp /home/ckapelonis/IdeaProjects/Reuters/out/artifacts/Reuters_jar/Reuters.jar fp19@clu04.softnet.tuc.gr:/home/fp19/
+scp /home/ckapelonis/IdeaProjects/Aegean/out/artifacts/Aegean_jar/Aegean.jar fp19@clu04.softnet.tuc.gr:/home/fp19/
+
+ssh:
+rm ~/Reuters.jar
+rm -r ~/output
+hdfs dfs -rm -r /user/fp19/output
+
+rm ~/Aegean.jar
+rm -r ~/output2
+hdfs dfs -rm -r /user/fp19/output2
+
+//run the app
+cd /usr/hdp/current/spark2-client
+./bin/spark-submit --class Reuters --master yarn --deploy-mode cluster ~/Reuters.jar
+
+./bin/spark-submit --class Aegean --master yarn --deploy-mode cluster ~/Aegean.jar
+
+hdfs dfs -copyToLocal /user/fp19/output ~
+hdfs dfs -copyToLocal /user/fp19/output2 ~
